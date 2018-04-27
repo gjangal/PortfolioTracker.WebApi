@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace PortfolioTracker.WebApi.Repository
 {
-    public interface ILotRepository
+    public interface ILotRepository:IRepository<Lot>
     {
-        IEnumerable<Lot> GetLots();
-        Lot GetLotById(int lotId);
-        bool InsertLot(Lot lot);
-        bool DeleteLot(int lotId);
-        bool UpdateLot(Lot lot);
+    }
+
+    public interface IRepository<TEntity>
+        where TEntity:class, IDbEntity
+    {
+        IEnumerable<TEntity> GetList();
+        TEntity GetSingle(int Id);
+        bool Insert(TEntity lot);
+        bool Delete(int Id);
+        bool Update(TEntity lot);
     }
 }

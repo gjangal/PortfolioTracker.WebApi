@@ -23,7 +23,7 @@ namespace PortfolioTracker.WebApi.Controllers
         [HttpGet]
         public IEnumerable<Lot> GetAll()
         {
-            return lotRepository.GetLots();
+            return lotRepository.GetList();
         }
     }
 }

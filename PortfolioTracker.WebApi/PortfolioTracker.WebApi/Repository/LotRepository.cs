@@ -19,17 +19,17 @@ namespace PortfolioTracker.WebApi.Repository
 
         public IConfiguration Configuration { get; }
 
-        public bool DeleteLot(int lotId)
+        public bool Delete(int lotId)
         {
             throw new NotImplementedException();
         }
 
-        public Lot GetLotById(int lotId)
+        public Lot GetSingle(int lotId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Lot> GetLots()
+        public IEnumerable<Lot> GetList()
         {
             using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
             {
@@ -39,12 +39,12 @@ namespace PortfolioTracker.WebApi.Repository
             }
         }
 
-        public bool InsertLot(Lot lot)
+        public bool Insert(Lot lot)
         {
             throw new NotImplementedException();
         }
 
-        public bool UpdateLot(Lot lot)
+        public bool Update(Lot lot)
         {
             throw new NotImplementedException();
         }
