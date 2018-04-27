@@ -13,15 +13,17 @@ namespace PortfolioTracker.WebApi.Controllers
     [Route("api/Lots")]
     public class LotsController : Controller
     {
+        private readonly ILotRepository lotRepository;
+
         public LotsController(ILotRepository lotRepository)
         {
-
+            this.lotRepository = lotRepository;
         }
 
         [HttpGet]
         public IEnumerable<Lot> GetAll()
         {
-            return Enumerable.Empty<Lot>();
+            return lotRepository.GetLots();
         }
     }
 }

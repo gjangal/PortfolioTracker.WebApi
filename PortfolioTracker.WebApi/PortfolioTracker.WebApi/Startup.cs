@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PortfolioTracker.WebApi.Repository;
 
 namespace PortfolioTracker.WebApi
 {
@@ -24,6 +25,10 @@ namespace PortfolioTracker.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddTransient<ILotRepository, LotRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
