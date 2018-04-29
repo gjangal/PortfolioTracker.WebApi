@@ -10,7 +10,7 @@ using PortfolioTracker.WebApi.Repository;
 namespace PortfolioTracker.WebApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Lots")]
+    
     public class LotsController : Controller
     {
         private readonly ILotRepository lotRepository;
@@ -20,10 +20,39 @@ namespace PortfolioTracker.WebApi.Controllers
             this.lotRepository = lotRepository;
         }
 
+        [Route("api/Lots")]
         [HttpGet]
         public IEnumerable<Lot> GetAll()
         {
             return lotRepository.GetList();
+        }
+
+        [Route("api/Lots")]
+        [HttpPost]
+        public bool Post([FromBody]Lot lot)
+        {
+            return lotRepository.Insert(lot);
+        }
+
+        [Route("api/Lots/{id}")]
+        [HttpGet]
+        public Lot Get(int id)
+        {
+            return lotRepository.GetSingle(id);
+        }
+
+        [Route("api/Lots/{id}")]
+        [HttpDelete]
+        public bool Delete(int id)
+        {
+            return lotRepository.Delete(id);
+        }
+
+        [Route("api/Lots/")]
+        [HttpPut]
+        public bool Put([FromBody]Lot lot)
+        {
+            return lotRepository.Update(lot);
         }
     }
 }
