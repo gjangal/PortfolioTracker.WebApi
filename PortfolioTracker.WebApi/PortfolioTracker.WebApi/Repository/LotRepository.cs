@@ -62,7 +62,7 @@ namespace PortfolioTracker.WebApi.Repository
             using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
             {
                 connection.Open();
-                var sql = $"INSERT [dbo].[Lot] ([Id], [Ric],[Price],[Qty],[Date],[Commission],[Side],[PortfolioId]) VALUES (@Id, @Ric,@Price,@Qty, @Date, @Commission, @Side, @PortfolioId)";
+                var sql = $"INSERT [dbo].[Lot] ([Ric],[Price],[Qty],[Date],[Commission],[Side],[PortfolioId]) VALUES ( @Ric,@Price,@Qty, @Date, @Commission, @Side, @PortfolioId)";
                 int rows = connection.Execute(sql,new { lot.Id, lot.Ric, lot.Price, lot.Qty, lot.Date, lot.Commission, lot.Side, lot.PortfolioId});
 
                 if(rows > 0)
@@ -80,8 +80,8 @@ namespace PortfolioTracker.WebApi.Repository
             using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
             {
                 connection.Open();
-                var sql = $"UPDATE [dbo].[Lot] SET [Id]=@Id, [Ric] = @Ric ,[Price] = @Price ,[Qty] = @Qty, [Date]=@Date, [Commission]=@Commission,[Side]=@Side,[PortfolioId]=@PortfolioId WHERE Id={lot.Id}";
-                int rows = connection.Execute(sql, new {lot.Id, lot.Ric, lot.Price, lot.Qty, lot.Date, lot.Commission, lot.Side, lot.PortfolioId });
+                var sql = $"UPDATE [dbo].[Lot] SET  [Ric] = @Ric ,[Price] = @Price ,[Qty] = @Qty, [Date]=@Date, [Commission]=@Commission,[Side]=@Side,[PortfolioId]=@PortfolioId WHERE Id={lot.Id}";
+                int rows = connection.Execute(sql, new {lot.Ric, lot.Price, lot.Qty, lot.Date, lot.Commission, lot.Side, lot.PortfolioId });
 
                 if (rows > 0)
                 {
