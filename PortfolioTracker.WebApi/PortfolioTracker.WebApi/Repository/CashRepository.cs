@@ -47,19 +47,29 @@ namespace PortfolioTracker.WebApi.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ICash>> GetListAsync()
+        public async Task<IEnumerable<ICash>> GetListAsync()
+        {
+            using (var connection = new SqlConnection(configuration.GetValue<string>("ConnectionStrings:MarketData")))
+            {
+                connection.Open();
+                var sql = $"select Id, PortfolioId, Amount, Date from dbo.Cash";
+                return await connection.QueryAsync<Cash>(sql);
+            }
+        }
+
+        public  ICash GetSingle(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public ICash GetSingle(int Id)
+        public async Task<ICash> GetSingleAsync(int Id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ICash> GetSingleAsync(int Id)
-        {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(configuration.GetValue<string>("ConnectionStrings:MarketData")))
+            {
+                connection.Open();
+                var sql = $"select Id, PortfolioId, Amount, Date from dbo.Cash where Id={Id}";
+                return (await connection.QueryAsync<Cash>(sql)).FirstOrDefault();
+            }
         }
 
         public bool Insert(ICash lot)
