@@ -28,6 +28,7 @@ namespace PortfolioTracker.WebApi
 
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<ILotRepository, LotRepository>();
+            services.AddTransient<ICashRepository, CashRepository>();
 
         }
 

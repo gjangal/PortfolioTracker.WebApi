@@ -91,5 +91,30 @@ namespace PortfolioTracker.WebApi.Repository
                 return false;
             }
         }
+
+        public Task<IEnumerable<Lot>> GetListAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Lot> GetSingleAsync(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> InsertAsync(Lot lot)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteAsync(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateAysnc(Lot lot)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
