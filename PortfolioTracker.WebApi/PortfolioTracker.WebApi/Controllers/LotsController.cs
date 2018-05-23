@@ -31,27 +31,21 @@ namespace PortfolioTracker.WebApi.Controllers
         [HttpPost]
         public async Task<bool> Post([FromBody]Lot lot)
         {
-            var result =  await lotRepository.InsertAsync(lot);
-
-            return result;
+            return await lotRepository.InsertAsync(lot);
         }
 
         [Route("api/Lots/{id}")]
         [HttpGet]
         public async Task<Lot> Get(int id)
         {
-            var lot =  await lotRepository.GetSingleAsync(id);
-
-            return lot;
-
+            return await lotRepository.GetSingleAsync(id);
         }
 
         [Route("api/Lots/{id}")]
         [HttpDelete]
         public async Task<bool> Delete(int id)
         {
-            var result = await lotRepository.DeleteAsync(id);
-            return result;
+            return await lotRepository.DeleteAsync(id);
         }
 
         [Route("api/Lots/")]
