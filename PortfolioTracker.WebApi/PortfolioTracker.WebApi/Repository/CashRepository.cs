@@ -20,10 +20,6 @@ namespace PortfolioTracker.WebApi.Repository
         {
             this.configuration = configuration;
         }
-        public bool Delete(int Id)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<bool> DeleteAsync(int Id)
         {
@@ -42,11 +38,6 @@ namespace PortfolioTracker.WebApi.Repository
             }
         }
 
-        public IEnumerable<ICash> GetList()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<ICash>> GetListAsync()
         {
             using (var connection = new SqlConnection(configuration.GetValue<string>("ConnectionStrings:MarketData")))
@@ -57,11 +48,6 @@ namespace PortfolioTracker.WebApi.Repository
             }
         }
 
-        public  ICash GetSingle(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ICash> GetSingleAsync(int Id)
         {
             using (var connection = new SqlConnection(configuration.GetValue<string>("ConnectionStrings:MarketData")))
@@ -70,11 +56,6 @@ namespace PortfolioTracker.WebApi.Repository
                 var sql = $"select Id, PortfolioId, Amount, Date from dbo.Cash where Id={Id}";
                 return (await connection.QueryAsync<Cash>(sql)).FirstOrDefault();
             }
-        }
-
-        public bool Insert(ICash lot)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<bool> InsertAsync(ICash lot)
@@ -92,11 +73,6 @@ namespace PortfolioTracker.WebApi.Repository
 
                 return false;
             }
-        }
-
-        public bool Update(ICash lot)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<bool> UpdateAysnc(ICash lot)

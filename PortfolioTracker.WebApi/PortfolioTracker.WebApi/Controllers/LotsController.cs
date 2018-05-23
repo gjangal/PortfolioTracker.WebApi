@@ -22,37 +22,43 @@ namespace PortfolioTracker.WebApi.Controllers
 
         [Route("api/Lots")]
         [HttpGet]
-        public IEnumerable<Lot> GetAll()
+        public async Task<IEnumerable<Lot>> GetAll()
         {
-            return lotRepository.GetList();
+            return await lotRepository.GetListAsync();
         }
 
         [Route("api/Lots")]
         [HttpPost]
-        public bool Post([FromBody]Lot lot)
+        public async Task<bool> Post([FromBody]Lot lot)
         {
-            return lotRepository.Insert(lot);
+            var result =  await lotRepository.InsertAsync(lot);
+
+            return result;
         }
 
         [Route("api/Lots/{id}")]
         [HttpGet]
-        public Lot Get(int id)
+        public async Task<Lot> Get(int id)
         {
-            return lotRepository.GetSingle(id);
+            var lot =  await lotRepository.GetSingleAsync(id);
+
+            return lot;
+
         }
 
         [Route("api/Lots/{id}")]
         [HttpDelete]
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            return lotRepository.Delete(id);
+            var result = await lotRepository.DeleteAsync(id);
+            return result;
         }
 
         [Route("api/Lots/")]
         [HttpPut]
-        public bool Put([FromBody]Lot lot)
+        public async Task<bool> Put([FromBody]Lot lot)
         {
-            return lotRepository.Update(lot);
+            return await lotRepository.UpdateAysnc(lot);
         }
     }
 }

@@ -19,69 +19,45 @@ namespace PortfolioTracker.WebApi.Repository
 
         public IConfiguration Configuration { get; }
 
-        public bool Delete(int lotId)
-        {
-            using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
-            {
-                connection.Open();
-                var sql = $"DELETE FROM dbo.Lot where Id=@lotId";
-                int rows =  connection.Execute(sql, new { lotId });
-
-                if(rows > 0)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public Lot GetSingle(int lotId)
-        {
-            using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
-            {
-                connection.Open();
-                var sql = $"select Id, Ric, Price, Qty , Date, Commission, Side, PortfolioId from dbo.Lot where Id={lotId}";
-                return connection.Query<Lot>(sql).FirstOrDefault();
-            }
-
-        }
-
-        public IEnumerable<Lot> GetList()
+        public async Task<IEnumerable<Lot>> GetListAsync()
         {
             using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
             {
                 connection.Open();
                 var sql = $"select Id, Ric, Price, Qty , Date, Commission, Side, PortfolioId from dbo.Lot";
-                return connection.Query<Lot>(sql);
+                return await connection.QueryAsync<Lot>(sql);
             }
         }
 
-        public bool Insert(Lot lot)
+        public async Task<Lot> GetSingleAsync(int Id)
         {
             using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
             {
                 connection.Open();
-                var sql = $"INSERT [dbo].[Lot] ([Ric],[Price],[Qty],[Date],[Commission],[Side],[PortfolioId]) VALUES ( @Ric,@Price,@Qty, @Date, @Commission, @Side, @PortfolioId)";
-                int rows = connection.Execute(sql,new { lot.Id, lot.Ric, lot.Price, lot.Qty, lot.Date, lot.Commission, lot.Side, lot.PortfolioId});
+                var sql = $"select Id, Ric, Price, Qty , Date, Commission, Side, PortfolioId from dbo.Lot where Id={Id}";
+                return (await connection.QueryAsync<Lot>(sql)).FirstOrDefault();
+            }
 
-                if(rows > 0)
+        }
+
+        public async Task<bool> InsertAsync(Lot lot)
+        {
+            using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
+            {
+                connection.Open();
+
+                var existsSql = $"SELECT TOP 1 Id from [dbo].[Lot] where Id={lot.Id}";
+
+                var exists = await connection.QueryAsync<Lot>(existsSql);
+
+
+                if (exists.Any())
                 {
-                    return true;
+                     return await UpdateAysnc(lot);
                 }
 
-                return false;
-            }
-
-        }
-
-        public bool Update(Lot lot)
-        {
-            using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
-            {
-                connection.Open();
-                var sql = $"UPDATE [dbo].[Lot] SET  [Ric] = @Ric ,[Price] = @Price ,[Qty] = @Qty, [Date]=@Date, [Commission]=@Commission,[Side]=@Side,[PortfolioId]=@PortfolioId WHERE Id={lot.Id}";
-                int rows = connection.Execute(sql, new {lot.Ric, lot.Price, lot.Qty, lot.Date, lot.Commission, lot.Side, lot.PortfolioId });
+                var sql = $"INSERT [dbo].[Lot] ([Ric],[Price],[Qty],[Date],[Commission],[Side],[PortfolioId]) VALUES ( @Ric,@Price,@Qty, @Date, @Commission, @Side, @PortfolioId)";
+                int rows = await connection.ExecuteAsync(sql, new { lot.Ric, lot.Price, lot.Qty, lot.Date, lot.Commission, lot.Side, lot.PortfolioId });
 
                 if (rows > 0)
                 {
@@ -92,29 +68,38 @@ namespace PortfolioTracker.WebApi.Repository
             }
         }
 
-        public Task<IEnumerable<Lot>> GetListAsync()
+        public async Task<bool> DeleteAsync(int Id)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
+            {
+                connection.Open();
+                var sql = $"DELETE FROM dbo.Lot where Id=@Id";
+                int rows = await connection.ExecuteAsync(sql, new { Id });
+
+                if (rows > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
         }
 
-        public Task<Lot> GetSingleAsync(int Id)
+        public async Task<bool> UpdateAysnc(Lot lot)
         {
-            throw new NotImplementedException();
-        }
+            using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
+            {
+                connection.Open();
+                var sql = $"UPDATE [dbo].[Lot] SET  [Ric] = @Ric ,[Price] = @Price ,[Qty] = @Qty, [Date]=@Date, [Commission]=@Commission,[Side]=@Side,[PortfolioId]=@PortfolioId WHERE Id={lot.Id}";
+                int rows = await connection.ExecuteAsync(sql, new { lot.Ric, lot.Price, lot.Qty, lot.Date, lot.Commission, lot.Side, lot.PortfolioId });
 
-        public Task<bool> InsertAsync(Lot lot)
-        {
-            throw new NotImplementedException();
-        }
+                if (rows > 0)
+                {
+                    return true;
+                }
 
-        public Task<bool> DeleteAsync(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateAysnc(Lot lot)
-        {
-            throw new NotImplementedException();
+                return false;
+            }
         }
     }
 }
