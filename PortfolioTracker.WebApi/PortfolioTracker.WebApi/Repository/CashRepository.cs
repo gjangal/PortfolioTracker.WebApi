@@ -11,6 +11,7 @@ namespace PortfolioTracker.WebApi.Repository
 {
     public interface ICashRepository : IRepository<ICash>
     {
+        Task<ICash> GetSingleAsync(int portfolioId, DateTime asOf);
     }
     public class CashRepository : ICashRepository
     {
@@ -54,6 +55,16 @@ namespace PortfolioTracker.WebApi.Repository
             {
                 connection.Open();
                 var sql = $"select Id, PortfolioId, Amount, Date from dbo.Cash where Id={Id}";
+                return (await connection.QueryAsync<Cash>(sql)).FirstOrDefault();
+            }
+        }
+
+        public async Task<ICash> GetSingleAsync(int portfolioId, DateTime asOf)
+        {
+            using (var connection = new SqlConnection(configuration.GetValue<string>("ConnectionStrings:MarketData")))
+            {
+                connection.Open();
+                var sql = $"select Id, PortfolioId, Amount, Date from dbo.Cash where PortfolioId={portfolioId} and Date='{asOf}'";
                 return (await connection.QueryAsync<Cash>(sql)).FirstOrDefault();
             }
         }
