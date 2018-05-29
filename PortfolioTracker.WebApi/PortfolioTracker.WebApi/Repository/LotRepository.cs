@@ -101,5 +101,16 @@ namespace PortfolioTracker.WebApi.Repository
                 return false;
             }
         }
+
+        public async Task<IEnumerable<ILot>> GetSingleAsync(int id, DateTime asOf)
+        {
+            using (var connection = new SqlConnection(Configuration.GetValue<string>("ConnectionStrings:MarketData")))
+            {
+                connection.Open();
+                var sql = $"select Id, Ric, Price, Qty , Date, Commission, Side, PortfolioId from dbo.Lot where PortfolioId={id} and Date <= '{asOf}'";
+                return await connection.QueryAsync<Lot>(sql);
+            }
+
+        }
     }
 }

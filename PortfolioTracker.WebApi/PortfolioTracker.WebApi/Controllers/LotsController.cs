@@ -54,5 +54,12 @@ namespace PortfolioTracker.WebApi.Controllers
         {
             return await lotRepository.UpdateAysnc(lot);
         }
+
+        [Route("api/Lots/Portfolio/{id}")]
+        [HttpGet]
+        public async Task<IEnumerable<ILot>> GetCashForPortfolioId(int id, [FromQuery]DateTime asOf)
+        {
+            return await lotRepository.GetSingleAsync(id, asOf);
+        }
     }
 }

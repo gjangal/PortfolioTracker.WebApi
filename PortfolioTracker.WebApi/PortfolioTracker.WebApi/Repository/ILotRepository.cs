@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace PortfolioTracker.WebApi.Repository
 {
-    public interface ILotRepository:IRepository<Lot>
+    public interface ILotRepository : IRepository<Lot>
     {
+        Task<IEnumerable<ILot>> GetSingleAsync(int id, DateTime asOf);
     }
 
     public interface IRepository<TEntity>
