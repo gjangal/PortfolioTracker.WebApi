@@ -64,7 +64,7 @@ namespace PortfolioTracker.WebApi.Repository
             using (var connection = new SqlConnection(configuration.GetValue<string>("ConnectionStrings:MarketData")))
             {
                 connection.Open();
-                var sql = $"select PortfolioId, SUM(Amount) from dbo.Cash where PortfolioId={portfolioId} and Date <= '{asOf}' group by PortfolioId";
+                var sql = $"select PortfolioId, SUM(Amount) as Amount from dbo.Cash where PortfolioId={portfolioId} and Date <= '{asOf}' group by PortfolioId";
                 return (await connection.QueryAsync<Cash>(sql)).FirstOrDefault();
             }
         }
